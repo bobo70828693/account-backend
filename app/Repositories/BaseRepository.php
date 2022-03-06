@@ -19,6 +19,21 @@ abstract class BaseRepository
         })->first();
     }
 
+    public function getAll($where_data, $where_in_data = [], $used_lock = false)
+    {
+        return $this->query()->where(function ($query) use ($where_data, $where_in_data, $used_lock) {
+            foreach ($where_in_data as $key => $value) {
+                $query->where($key, $value);
+            }
+            foreach ($where_in_data as $key => $value) {
+                $query->whereIn($key, $value);
+            }
+            if ($used_lock) {
+                $query->lockForUpdate();
+            }
+        })->get();
+    }
+
     public function create($data)
     {
         return $this->query()->create($data);

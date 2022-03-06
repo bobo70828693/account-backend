@@ -19,4 +19,7 @@ Route::post('login', 'User\LoginController@login')->name('login');
 Route::group(['middleware' => ['auth:api']], function () {
     Route::post('logout', 'User\LoginController@logout');
     Route::post('self', 'User\LoginController@self');
+
+    Route::apiResource('stock', 'Stock\StockController');
+    Route::get('stock-code', 'Stock\StockController@getStockCodeList');
 });
